@@ -1,0 +1,87 @@
+:root {
+    --primary-color: #2563c0;
+    --secondary-color: #ee764b;
+    --dark-color: #292929;
+    --white-color: #e8ebe9;
+}
+
+body {
+    color: var(--dark-color);
+}
+
+nav {
+    background-color: var(--dark-color);
+}
+
+footer {
+    background-color: var(--dark-color);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--primary-color);
+}
+
+main .logo {
+    max-width: 700px;
+    max-height: 550px;
+}
+
+footer {
+    padding-right: 1rem;
+    padding-left: 1rem;
+}
+
+footer .social a {
+    color: var(--white-color);
+    opacity: 0.75;
+    transition: all 0.3s ease-in-out;
+}
+
+footer .social a:hover {
+    color: var(--secondary-color);
+    opacity: 1;
+}
+
+main > .container {
+    padding: 60px 15px 0;
+}
+
+.sticky-nav {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.bs-icon {
+    color: purple;
+}
+
+.js-icon {
+    color: rgb(226.211, 4);
+}
+
+.html5-icon {
+    color: orangered;
+}
+
+.css-icon {
+    color: rgb(11, 82, 214);
+}
+
+.checklist li i {
+    color: var(--secondary-color);
+}
+
+/* PRISM */
+code[class*='language-'],
+pre[class*='language-'] {
+    white-space: pre-wrap;
+    word-break: break-all;
+    word-wrap: break-word;
+}
