@@ -1,2 +1,2 @@
-# SiteTemplate
-Site Template for JS Projects
+# Mortgage Calculator
+About this app
