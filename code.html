@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="h-100">
     <head>
-        <title>App Name: A Coding Project By Troy Szatkowski</title>
+        <title>Loan Calc: A Coding Project By Troy Szatkowski</title>
         <!-- Required meta tags -->
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -22,7 +22,7 @@
         <!-- NAV -->
         <nav class="navbar navbar-expand-md navbar-dark fixed-top">
             <div class="container-fluid">
-                <a class="navbar-brand" href="index.html"><img src="img/icon.png" alt="Site Logo" class="d-inline-block align-text-top" width="30" height="30" /> BOCRA</a>
+                <a class="navbar-brand" href="index.html"><img src="img/icon.png" alt="Site Logo" class="d-inline-block align-text-top" width="30" height="30" /> LOAN CALC</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -51,20 +51,136 @@
         <!-- MAIN -->
         <main class="flex-shrink-0">
             <div class="container py-5 px-5 mt-5">
-                <h2 class="border-1 border-bottom border-dark">The Code for BOCRA</h2>
+                <h2 class="border-1 border-bottom border-dark">The Code for LOAN CALC</h2>
                 <div class="row row-cols-1 row-cols-lg-2">
                     <div class="col-lg-8">
                         <pre class="line-numbers"><code class="language-javascript">
-                            // Call Hello
-                            function HelloWorld() {
-                                alert('hello World!');
+                            function getValues() {
+                                let loanAmount = document.querySelector('#loanAmount').value;
+                                let loanPayments = document.querySelector('#loanPayments').value;
+                                let loanRate = document.querySelector('#loanRate').value;
+                            
+                                // validate
+                                loanAmount = parseFloat(loanAmount);
+                                loanPayments = parseInt(loanPayments);
+                                loanRate = parseFloat(loanRate);
+                            
+                                if (isNaN(loanAmount) === false && isNaN(loanPayments) === false && isNaN(loanRate) === false) {
+                                    let loanArray = calculateValues(loanAmount, loanPayments, loanRate);
+                                    displayValues(loanArray);
+                                } else {
+                                    alert('Please enter values to calculate your loan payments');
+                                    displayValues(null);
+                                }
                             }
+                            
+                            function calculateValues(amount, payments, rate) {
+                                let retObj = {};
+                                let loanArray = [];
+                            
+                                let MonthlyPayment = Round2((amount * (rate / 1200)) / (1 - Math.pow(1 + rate / 1200, -Math.abs(payments))));
+                            
+                                let pPrincipal = 0;
+                                let pInterest = 0;
+                                let pTotalInterest = 0;
+                                let pBalance = amount;
+                            
+                                for (let i = 1; i <= payments; i++) {
+                                    let obj = {};
+                            
+                                    // local values
+                                    pInterest = pBalance * (rate / 1200);
+                                    pTotalInterest += pInterest;
+                                    pPrincipal = MonthlyPayment - pInterest;
+                                    pBalance -= pPrincipal;
+                            
+                                    // values for the month
+                                    obj.month = i;
+                                    obj.payment = MonthlyPayment;
+                                    obj.interest = Round2(pInterest);
+                                    obj.principal = Round2(pPrincipal);
+                                    obj.totalInterest = Round2(pTotalInterest);
+                                    obj.balance = Round2(pBalance);
+                            
+                                    // add month to array
+                                    loanArray.push(obj);
+                                }
+                            
+                                // add values for display to return object
+                                retObj.loanArray = loanArray;
+                                retObj.payment = MonthlyPayment;
+                                retObj.totalPrincipal = amount;
+                                retObj.totalInterest = Round2(pTotalInterest);
+                                retObj.totalCost = Round2(amount + pTotalInterest);
+                            
+                                return retObj;
+                            }
+                            
+                            function displayValues(retObj) {
+                                let body = document.querySelector('#loanBody');
+                                let row = document.querySelector('#loanRow');
+                            
+                                // clear body
+                                body.innerHTML = '';
+                            
+                                // show table values
+                                if (retObj) {
+                                    for (let i = 0; i < retObj.loanArray.length; i++) {
+                                        let myRow = retObj.loanArray[i];
+                                        let tableRow = document.importNode(row.content, true);
+                                        let rowCols = tableRow.querySelectorAll('td');
+                            
+                                        rowCols[0].textContent = myRow.month;
+                                        rowCols[1].textContent = myRow.payment;
+                                        rowCols[2].textContent = myRow.principal;
+                                        rowCols[3].textContent = myRow.interest;
+                                        rowCols[4].textContent = myRow.totalInterest;
+                                        rowCols[5].textContent = myRow.balance;
+                            
+                                        body.appendChild(tableRow);
+                                    }
+                                }
+                            
+                                // show quick view values
+                                let payment = document.querySelector('#monthlyPayment');
+                                let totalPrincipal = document.querySelector('#totalPrincipal');
+                                let totalInterest = document.querySelector('#totalInterest');
+                                let totalCost = document.querySelector('#totalCost');
+                            
+                                if (retObj) {
+                                    payment.innerHTML = formatter.format(retObj.payment);
+                                    totalPrincipal.innerHTML = formatter.format(retObj.totalPrincipal);
+                                    totalInterest.innerHTML = formatter.format(retObj.totalInterest);
+                                    totalCost.innerHTML = formatter.format(retObj.totalCost);
+                                } else {
+                                    payment.innerHTML = '-';
+                                    totalPrincipal.innerHTML = '-';
+                                    totalInterest.innerHTML = '-';
+                                    totalCost.innerHTML = '-';
+                                }
+                            }
+                            
+                            function Round2(num) {
+                                return Math.round((num + Number.EPSILON) * 100) / 100;
+                            }
+                            
+                            const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+                            
                         </code></pre>
                     </div>
                     <div class="col-lg-4">
-                        <p>The Code is structured in one function.</p>
-                        <h5>Hello World</h5>
-                        <p>Hellow World is a function that displays an lert with a message of "Hello World"</p>
+                        <p>The Code is structured in several functions.</p>
+                        <h5>getValues</h5>
+                        <p>Gets the user input and validates the values. Calls the functions to process the values.</p>
+                        <h5>calculateValues</h5>
+                        <p>
+                            Creates an array of loan obect values for each month.<br />
+                            Creates heads up quick view values.
+                        </p>
+                        <h5>displayData</h5>
+                        <p>Displays the loan results to user.</p>
+                        <h5>Round2</h5>
+                        <p>Special rounding function to round number values to two places.</p>
                     </div>
                 </div>
             </div>

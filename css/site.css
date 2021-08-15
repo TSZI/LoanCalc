@@ -1,6 +1,6 @@
 :root {
-    --primary-color: #2563c0;
-    --secondary-color: #ee764b;
+    --primary-color: #333;
+    --secondary-color: #2563c0;
     --dark-color: #292929;
     --white-color: #e8ebe9;
 }
@@ -58,12 +58,16 @@ main > .container {
     width: 100%;
 }
 
+.bg-blue {
+    background-color: var(--primary-color);
+}
+
 .bs-icon {
     color: purple;
 }
 
 .js-icon {
-    color: rgb(226.211, 4);
+    color: #e4d407;
 }
 
 .html5-icon {

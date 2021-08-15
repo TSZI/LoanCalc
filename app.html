@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="h-100">
     <head>
-        <title>App Name: A Coding Project By Troy Szatkowski</title>
+        <title>Loan Calc: A Coding Project By Troy Szatkowski</title>
         <!-- Required meta tags -->
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -20,7 +20,7 @@
         <!-- NAV -->
         <nav class="navbar navbar-expand-md navbar-dark fixed-top">
             <div class="container-fluid">
-                <a class="navbar-brand" href="index.html"><img src="img/icon.png" alt="Site Logo" class="d-inline-block align-text-top" width="30" height="30" /> BOCRA</a>
+                <a class="navbar-brand" href="index.html"><img src="img/icon.png" alt="Site Logo" class="d-inline-block align-text-top" width="30" height="30" /> LOAN CALC</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -48,7 +48,65 @@
 
         <!-- MAIN -->
         <main class="flex-shrink-0">
-            <div class="container"></div>
+            <div class="container mt-2">
+                <h1 class="mb-3">Loan Calculator</h1>
+                <div class="row row-cols-1 row-cols-lg-2 mb-3">
+                    <div class="col">
+                        <form action="" class="bg-light p-3 mb-5 border border-1 rounded">
+                            <div class="mb-3">
+                                <label for="loanAmount" class="form-label">Loan Amount:</label>
+                                <input id="loanAmount" type="number" class="form-control" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="loanPayments" class="form-label">Payments:</label>
+                                <input id="loanPayments" type="number" class="form-control" max="360" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="loanRate" class="form-label">Rate:</label>
+                                <input id="loanRate" type="number" class="form-control" min="0" max="100" />
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button id="btnCalculate" type="button" class="btn btn-primary">Calculate</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col px-5">
+                        <div class="mb-4 text-center">
+                            <h3 class="mb-4">Your Monthly Payments</h3>
+                            <h1 id="monthlyPayment">-</h1>
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <p>Total Principal</p>
+                                <p>Total Interest</p>
+                                <p>Total Cost</p>
+                            </div>
+                            <div class="col-4 text-start">
+                                <p id="totalPrincipal" class="text-nowrap">-</p>
+                                <p id="totalInterest" class="text-nowrap">-</p>
+                                <p id="totalCost" class="text-nowrap fw-bold">-</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead class="bg-blue text-light">
+                                <tr>
+                                    <th>Month</th>
+                                    <th>Pament</th>
+                                    <th>Principal</th>
+                                    <th>Interest</th>
+                                    <th>Total Interest</th>
+                                    <th>Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody id="loanBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </main>
 
         <!-- FOOTER -->
@@ -81,9 +139,23 @@
             </div>
         </footer>
 
+        <template id="loanRow">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </template>
+
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
         <script src="js/site.js"></script>
+        <script>
+            document.querySelector('#btnCalculate').addEventListener('click', getValues);
+        </script>
     </body>
 </html>
