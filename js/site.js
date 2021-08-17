@@ -21,7 +21,7 @@ function calculateValues(amount, payments, rate) {
     let retObj = {};
     let loanArray = [];
 
-    let MonthlyPayment = Round2((amount * (rate / 1200)) / (1 - Math.pow(1 + rate / 1200, -Math.abs(payments))));
+    let MonthlyPayment = (amount * (rate / 1200)) / (1 - (1 + rate / 1200) ** -Math.abs(payments));
 
     let pPrincipal = 0;
     let pInterest = 0;
@@ -40,21 +40,21 @@ function calculateValues(amount, payments, rate) {
         // values for the month
         obj.month = i;
         obj.payment = MonthlyPayment;
-        obj.interest = Round2(pInterest);
-        obj.principal = Round2(pPrincipal);
-        obj.totalInterest = Round2(pTotalInterest);
-        obj.balance = Round2(pBalance);
+        obj.interest = pInterest;
+        obj.principal = pPrincipal;
+        obj.totalInterest = pTotalInterest;
+        obj.balance = pBalance;
 
         // add month to array
         loanArray.push(obj);
     }
 
-    // add values for display to return object
+    // add values for quick view display to return object
     retObj.loanArray = loanArray;
     retObj.payment = MonthlyPayment;
     retObj.totalPrincipal = amount;
-    retObj.totalInterest = Round2(pTotalInterest);
-    retObj.totalCost = Round2(amount + pTotalInterest);
+    retObj.totalInterest = pTotalInterest;
+    retObj.totalCost = amount + pTotalInterest;
 
     return retObj;
 }
@@ -74,11 +74,11 @@ function displayValues(retObj) {
             let rowCols = tableRow.querySelectorAll('td');
 
             rowCols[0].textContent = myRow.month;
-            rowCols[1].textContent = myRow.payment;
-            rowCols[2].textContent = myRow.principal;
-            rowCols[3].textContent = myRow.interest;
-            rowCols[4].textContent = myRow.totalInterest;
-            rowCols[5].textContent = myRow.balance;
+            rowCols[1].textContent = myRow.payment.toFixed(2);
+            rowCols[2].textContent = myRow.principal.toFixed(2);
+            rowCols[3].textContent = myRow.interest.toFixed(2);
+            rowCols[4].textContent = myRow.totalInterest.toFixed(2);
+            rowCols[5].textContent = myRow.balance.toFixed(2);
 
             body.appendChild(tableRow);
         }
@@ -91,20 +91,18 @@ function displayValues(retObj) {
     let totalCost = document.querySelector('#totalCost');
 
     if (retObj) {
+        // Show Values
         payment.innerHTML = formatter.format(retObj.payment);
         totalPrincipal.innerHTML = formatter.format(retObj.totalPrincipal);
         totalInterest.innerHTML = formatter.format(retObj.totalInterest);
         totalCost.innerHTML = formatter.format(retObj.totalCost);
     } else {
+        // Clear if nothing
         payment.innerHTML = '-';
         totalPrincipal.innerHTML = '-';
         totalInterest.innerHTML = '-';
         totalCost.innerHTML = '-';
     }
-}
-
-function Round2(num) {
-    return Math.round((num + Number.EPSILON) * 100) / 100;
 }
 
 const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
